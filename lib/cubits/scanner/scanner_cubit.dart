@@ -7,9 +7,10 @@ part 'scanner_state.dart';
 class ScannerCubit extends Cubit<ScannerState> {
   ScannerCubit() : super(ScannerInitial());
 
-  void scanQR(QRViewController controller) {
+  void scanQR(QRViewController controller) async {
     controller.scannedDataStream.listen((scanData) {
       emit(ScannerInitial(trackingNumber: scanData.code));
+      controller.stopCamera();
     });
   }
 }

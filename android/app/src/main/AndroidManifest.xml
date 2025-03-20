@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Taabo Scanner"
+        android:label="Tajmex Scanner"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

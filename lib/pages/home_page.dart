@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF9FAFB), // Light background color
       appBar: AppBar(
         title: const Text(
-          'TAABO SCANNER',
+          'TAJMEX SCANNER',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
