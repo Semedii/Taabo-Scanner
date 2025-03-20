@@ -157,19 +157,34 @@ class DetailsPage extends StatelessWidget {
           DropdownMenuEntry<StoreEnums>(
             value: StoreEnums.SHEIN,
             label: StoreEnums.SHEIN.name,
+            leadingIcon: Image.asset(
+              "assets/images/shein.webp",
+              height: 20,
+              width: 20,
+            ),
           ),
           DropdownMenuEntry<StoreEnums>(
             value: StoreEnums.ALIEXPRESS,
             label: StoreEnums.ALIEXPRESS.name,
+            leadingIcon: Image.asset(
+              "assets/images/aliexpress.png",
+              height: 20,
+              width: 20,
+            ),
           ),
           DropdownMenuEntry<StoreEnums>(
             value: StoreEnums.AMAZON,
             label: StoreEnums.AMAZON.name,
+            leadingIcon: Image.asset(
+              "assets/images/amazon.png",
+              height: 20,
+              width: 20,
+            ),
           ),
           DropdownMenuEntry<StoreEnums>(
-            value: StoreEnums.OTHER,
-            label: StoreEnums.OTHER.name,
-          ),
+              value: StoreEnums.OTHER,
+              label: StoreEnums.OTHER.name,
+              leadingIcon: Icon(Icons.question_mark)),
         ],
       ),
     );
