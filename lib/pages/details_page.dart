@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/cubits/details/details_cubit.dart';
+import 'package:taabo/utils/store_enums.dart';
 import 'package:taabo/utils/text_validators.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -26,12 +27,13 @@ class DetailsPage extends StatelessWidget {
           builder: (context, state) {
             state as DetailsInitial;
             final cubit = BlocProvider.of<DetailsCubit>(context);
-            return Container(
-              color: const Color(0xFFF9FAFB),
-              padding: const EdgeInsets.all(16),
+            return Form(
+              key: _formKey,
               child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
+                child: Container(
+                  color: const Color(0xFFF9FAFB),
+                  padding: const EdgeInsets.all(16),
+                  height: MediaQuery.of(context).size.height - 80,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -42,21 +44,17 @@ class DetailsPage extends StatelessWidget {
                         isReadOnly: true,
                       ),
                       _buildInputField(
-                        label: 'Weight',
-                        icon: Icons.scale,
-                        onChanged: cubit.onWeightChanged,
-                      ),
-                      _buildInputField(
                         label: 'Name',
                         icon: Icons.person,
                         onChanged: cubit.onNameChanged,
                       ),
                       _buildInputField(
-                        label: 'Store',
-                        icon: Icons.corporate_fare,
-                        onChanged: cubit.onStoreChanged,
-                        textInputAction: TextInputAction.done,
+                        label: 'Weight',
+                        icon: Icons.scale,
+                        onChanged: cubit.onWeightChanged,
                       ),
+                      _buildStoreDropDown(),
+                      Spacer(),
                       _buildSubmitButton(context),
                     ],
                   ),
@@ -133,15 +131,90 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
+  Widget _buildStoreDropDown() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: DropdownMenu(
+        hintText: "Store",
+        leadingIcon: Icon(
+          Icons.shopping_bag,
+          color: Color(0xFF1e78c1),
+        ),
+        width: double.infinity,
+        menuStyle: _getDropMenuStyle(),
+        inputDecorationTheme: _getDropInputDecoration(),
+        dropdownMenuEntries: [
+          DropdownMenuEntry<StoreEnums>(
+            value: StoreEnums.SHEIN,
+            label: StoreEnums.SHEIN.name,
+          ),
+          DropdownMenuEntry<StoreEnums>(
+            value: StoreEnums.ALIEXPRESS,
+            label: StoreEnums.ALIEXPRESS.name,
+          ),
+          DropdownMenuEntry<StoreEnums>(
+            value: StoreEnums.AMAZON,
+            label: StoreEnums.AMAZON.name,
+          ),
+          DropdownMenuEntry<StoreEnums>(
+            value: StoreEnums.OTHER,
+            label: StoreEnums.OTHER.name,
+          ),
+        ],
+      ),
+    );
+  }
+
+  MenuStyle _getDropMenuStyle() {
+    return MenuStyle(
+      backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+      padding: WidgetStatePropertyAll<EdgeInsetsGeometry>(
+        EdgeInsets.symmetric(horizontal: 16),
+      ),
+    );
+  }
+
+  InputDecorationTheme _getDropInputDecoration() {
+    return InputDecorationTheme(
+        labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24));
+  }
+
   Widget _buildSubmitButton(BuildContext context) {
-    return Center(
-        child: AppButton(
-            text: "Submit",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                BlocProvider.of<DetailsCubit>(context)
-                    .onSubmitButton(trackingNumber);
-              }
-            }));
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Center(
+          child: AppButton(
+              text: "Submit",
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  BlocProvider.of<DetailsCubit>(context).onSubmitButton(
+                    trackingNumber,
+                  );
+                }
+              })),
+    );
   }
 }
