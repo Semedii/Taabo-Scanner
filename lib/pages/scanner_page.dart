@@ -21,7 +21,7 @@ class ScannerPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFF2563EB), // Primary color
+        backgroundColor: const Color(0xFF1e78c1), // Primary color
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -63,7 +63,7 @@ class ScannerPage extends StatelessWidget {
                         children: [
                           CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Color(0xFF2563EB), // Primary color
+                              Color(0xFF1e78c1), // Primary color
                             ),
                           ),
                           SizedBox(height: 16),
@@ -71,7 +71,8 @@ class ScannerPage extends StatelessWidget {
                             'Scanning, please hold...',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Color(0xFF6B7280), // Light gray text
+                              color: Color.fromARGB(
+                                  255, 0, 0, 0), // Light gray text
                             ),
                           ),
                         ],

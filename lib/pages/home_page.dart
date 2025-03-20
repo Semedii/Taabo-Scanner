@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFF2563EB), // Primary color
+        backgroundColor: const Color(0xFF1e78c1), // Primary color
         centerTitle: true,
         elevation: 0,
       ),
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
             MaterialPageRoute(builder: (context) => ScannerPage()),
           );
         },
-        backgroundColor: const Color(0xFF2563EB),
+        backgroundColor: const Color(0xFF1e78c1),
         child: Icon(
           Icons.add,
           color: Colors.white,

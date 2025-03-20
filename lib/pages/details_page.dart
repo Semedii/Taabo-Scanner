@@ -16,7 +16,7 @@ class DetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: _buildAppBarTitle(),
-        backgroundColor: const Color(0xFF2563EB),
+        backgroundColor: const Color(0xFF1e78c1),
         leading: _buildAppBarIcon(context),
         elevation: 0,
       ),
@@ -127,7 +127,7 @@ class DetailsPage extends StatelessWidget {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Color(0xFF6B7280)),
-      prefixIcon: Icon(icon, color: const Color(0xFF2563EB)),
+      prefixIcon: Icon(icon, color: const Color(0xFF1e78c1)),
       border: InputBorder.none,
       contentPadding: const EdgeInsets.all(16),
     );
