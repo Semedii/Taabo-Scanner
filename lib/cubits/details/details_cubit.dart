@@ -1,16 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
-  final FocusNode focusNode = FocusNode();
   DetailsCubit() : super(DetailsInitial());
 
-  onKgChanged(String? kg) {
+  onWeightChanged(String? weight) {
     var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(kg: kg));
+    emit(lastState.copyWith(weight: weight));
   }
 
   onNameChanged(String? name) {
@@ -26,12 +24,6 @@ class DetailsCubit extends Cubit<DetailsState> {
   onSubmitButton(String trackingNumber) {
     var lastState = state as DetailsInitial;
     print(
-        "tracking number: $trackingNumber,  \n kg : ${lastState.kg},  \n name : ${lastState.name}, \n store: ${lastState.store},");
-  }
-
-  @override
-  Future<void> close() {
-    focusNode.dispose();
-    return super.close();
+        "tracking number: $trackingNumber,  \n Weight : ${lastState.weight},  \n name : ${lastState.name}, \n store: ${lastState.store},");
   }
 }

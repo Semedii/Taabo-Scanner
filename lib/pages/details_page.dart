@@ -42,10 +42,9 @@ class DetailsPage extends StatelessWidget {
                         isReadOnly: true,
                       ),
                       _buildInputField(
-                        label: 'KG',
+                        label: 'Weight',
                         icon: Icons.scale,
-                        onChanged: cubit.onKgChanged,
-                        focusNode: cubit.focusNode,
+                        onChanged: cubit.onWeightChanged,
                       ),
                       _buildInputField(
                         label: 'Name',
@@ -94,7 +93,6 @@ class DetailsPage extends StatelessWidget {
     String? initialvalue,
     bool isReadOnly = false,
     Function(String)? onChanged,
-    FocusNode? focusNode,
     TextInputAction? textInputAction = TextInputAction.next,
   }) {
     return Container(
@@ -106,7 +104,7 @@ class DetailsPage extends StatelessWidget {
       ),
       child: TextFormField(
         textInputAction: textInputAction,
-        focusNode: focusNode,
+        autofocus: true,
         enabled: !isReadOnly,
         initialValue: initialvalue,
         readOnly: isReadOnly,

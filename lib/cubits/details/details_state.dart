@@ -4,20 +4,20 @@ part of 'details_cubit.dart';
 sealed class DetailsState {}
 
 final class DetailsInitial extends DetailsState {
-  final String? kg;
+  final String? weight;
   final String? name;
   final String? store;
 
-  DetailsInitial({this.kg, this.name, this.store});
+  DetailsInitial({this.weight, this.name, this.store});
 
   DetailsInitial copyWith({
-    String? kg,
+    String? weight,
     String? name,
     String? store,
     String? destination,
   }) {
     return DetailsInitial(
-      kg: kg ?? this.kg,
+      weight: weight ?? this.weight,
       name: name ?? this.name,
       store: store ?? this.store,
     );
