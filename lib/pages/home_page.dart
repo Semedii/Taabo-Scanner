@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taabo/components/app_button.dart';
 import 'package:taabo/pages/scanner_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,24 +21,20 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/logo.png",
-              height: 200,
-            ),
-            const SizedBox(height: 40),
-            AppButton(
-                text: "Scan Package",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ScannerPage()),
-                  );
-                })
-          ],
+      body: Column(
+        children: [],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ScannerPage()),
+          );
+        },
+        backgroundColor: const Color(0xFF2563EB),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
     );
