@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taabo/components/app_button.dart';
+import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/details/details_cubit.dart';
 import 'package:taabo/utils/store_enums.dart';
-import 'package:taabo/utils/text_validators.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({required this.trackingNumber, super.key});
@@ -37,18 +37,18 @@ class DetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildInputField(
+                      AppTextFormField(
                         label: "Tracking Number",
                         initialvalue: trackingNumber,
                         icon: Icons.qr_code,
                         isReadOnly: true,
                       ),
-                      _buildInputField(
+                      AppTextFormField(
                         label: 'Name',
                         icon: Icons.person,
                         onChanged: cubit.onNameChanged,
                       ),
-                      _buildInputField(
+                      AppTextFormField(
                         label: 'Weight',
                         icon: Icons.scale,
                         onChanged: cubit.onWeightChanged,
@@ -82,52 +82,6 @@ class DetailsPage extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.arrow_back, color: Colors.white),
       onPressed: () => Navigator.pop(context),
-    );
-  }
-
-  Widget _buildInputField({
-    required String label,
-    required IconData icon,
-    String? initialvalue,
-    bool isReadOnly = false,
-    Function(String)? onChanged,
-    TextInputAction? textInputAction = TextInputAction.next,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [_getInputFieldBoxshadow()],
-      ),
-      child: TextFormField(
-        textInputAction: textInputAction,
-        autofocus: true,
-        enabled: !isReadOnly,
-        initialValue: initialvalue,
-        readOnly: isReadOnly,
-        decoration: _getTextFormFieldDecoration(label, icon),
-        validator: TextValidators.required,
-        onChanged: onChanged,
-      ),
-    );
-  }
-
-  BoxShadow _getInputFieldBoxshadow() {
-    return const BoxShadow(
-      color: Colors.black12,
-      blurRadius: 4,
-      offset: Offset(0, 2),
-    );
-  }
-
-  InputDecoration _getTextFormFieldDecoration(String label, IconData icon) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Color(0xFF6B7280)),
-      prefixIcon: Icon(icon, color: const Color(0xFF1e78c1)),
-      border: InputBorder.none,
-      contentPadding: const EdgeInsets.all(16),
     );
   }
 

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
-  const AppButton({required this.text, required this.onPressed, super.key});
+  const AppButton(
+      {required this.text,
+      required this.onPressed,
+      this.color = const Color(0xFF1e78c1),
+      this.fontColor = Colors.white,
+      super.key});
 
   final String text;
+  final Color? color;
+  final Color? fontColor;
   final void Function()? onPressed;
 
   @override
@@ -11,7 +18,7 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF1e78c1),
+        backgroundColor: color,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
@@ -20,10 +27,10 @@ class AppButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: fontColor,
         ),
       ),
     );
