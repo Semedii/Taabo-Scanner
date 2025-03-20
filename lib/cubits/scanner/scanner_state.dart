@@ -10,7 +10,7 @@ final class ScannerInitial extends ScannerState {
 
   ScannerInitial copyWith({String? trackingNumber}) {
     return ScannerInitial(
-      trackingNumber: this.trackingNumber ?? trackingNumber,
+      trackingNumber: trackingNumber ?? this.trackingNumber,
     );
   }
 }
