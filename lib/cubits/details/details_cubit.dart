@@ -1,34 +1,37 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
+  final FocusNode focusNode = FocusNode();
   DetailsCubit() : super(DetailsInitial());
 
-  onFullNameChanged(String? fullName) {
+  onKgChanged(String? kg) {
     var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(fullName: fullName));
+    emit(lastState.copyWith(kg: kg));
   }
 
-  onPhoneNumberChanged(String? phoneNumber) {
+  onNameChanged(String? name) {
     var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(phoneNumber: phoneNumber));
+    emit(lastState.copyWith(name: name));
   }
 
-  onStatusChanged(String? status) {
+  onStoreChanged(String? store) {
     var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(status: status));
-  }
-
-  onDestinationChanged(String? destination) {
-    var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(destination: destination));
+    emit(lastState.copyWith(store: store));
   }
 
   onSubmitButton(String trackingNumber) {
     var lastState = state as DetailsInitial;
     print(
-        "tracking number: $trackingNumber,  \n full name: ${lastState.fullName},  \n phone number: ${lastState.phoneNumber}, \n status: ${lastState.status}, \n destination : ${lastState.destination},");
+        "tracking number: $trackingNumber,  \n kg : ${lastState.kg},  \n name : ${lastState.name}, \n store: ${lastState.store},");
+  }
+
+  @override
+  Future<void> close() {
+    focusNode.dispose();
+    return super.close();
   }
 }

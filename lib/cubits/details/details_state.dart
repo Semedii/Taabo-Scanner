@@ -4,29 +4,22 @@ part of 'details_cubit.dart';
 sealed class DetailsState {}
 
 final class DetailsInitial extends DetailsState {
-  final String? fullName;
-  final String? phoneNumber;
-  final String? status;
-  final String? destination;
+  final String? kg;
+  final String? name;
+  final String? store;
 
-  DetailsInitial({
-    this.fullName,
-    this.phoneNumber,
-    this.status,
-    this.destination,
-  });
+  DetailsInitial({this.kg, this.name, this.store});
 
   DetailsInitial copyWith({
-    String? fullName,
-    String? phoneNumber,
-    String? status,
+    String? kg,
+    String? name,
+    String? store,
     String? destination,
   }) {
     return DetailsInitial(
-      fullName: fullName ?? this.fullName,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      status: status ?? this.status,
-      destination: destination ?? this.destination,
+      kg: kg ?? this.kg,
+      name: name ?? this.name,
+      store: store ?? this.store,
     );
   }
 }
