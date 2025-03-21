@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:taabo/services/auth_service.dart';
+import 'package:taabo/services/secure_storage_service.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
+  final SecureStorageService _secureStorage = SecureStorageService();
   final AuthService _authService = AuthService();
   LoginCubit() : super(LoginInitial());
 
@@ -32,6 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
         currentState.email!,
         currentState.password!,
       );
+      await _secureStorage.write('auth_token', response["token"]);
       emit(LoginSuccess(token: response['token']));
     } catch (e) {
       emit(LoginFailure(errorMessage: e.toString()));

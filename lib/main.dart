@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:taabo/pages/home_page.dart';
 import 'package:taabo/pages/login_page.dart';
+import 'package:taabo/services/secure_storage_service.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final secureStorage = SecureStorageService();
+  final token = await secureStorage.read('auth_token');
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-    );
-  }
+  runApp(
+    MaterialApp(
+      home: token != null ? HomePage() : LoginPage(),
+    ),
+  );
 }
