@@ -14,44 +14,55 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Color(0xFF1e78c1),
       body: BlocProvider(
         create: (context) => LoginCubit(),
-        child: BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) {
-            state as LoginInitial;
-
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 232, 241, 249),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(60),
-                        bottomRight: Radius.circular(60),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
+        child: BlocListener<LoginCubit, LoginState>(
+          listener: _getListener,
+          child: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+            if (state is LoginInitial) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 232, 241, 249),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(60),
                         ),
-                      ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        "assets/images/logo.png",
+                        scale: 2,
+                      ),
                     ),
-                    child: Image.asset(
-                      "assets/images/logo.png",
-                      scale: 2,
+                    SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _buildLoginForm(context, state),
                     ),
+                  ],
+                ),
+              );
+            }
+            if (state is LoginLoading) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF1e78c1),
                   ),
-                  SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _buildLoginForm(context, state),
-                  ),
-                ],
-              ),
-            );
-          },
+                ),
+              );
+            }
+            return SizedBox.shrink();
+          }),
         ),
       ),
     );
@@ -96,7 +107,7 @@ class LoginPage extends StatelessWidget {
           Spacer(),
           AppButton(
             text: "Login",
-            onPressed: () => onLogin(context, state),
+            onPressed: cubit.onLogin,
             color: Colors.white,
             fontColor: Color(0xFF1e78c1),
           )
@@ -105,8 +116,8 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void onLogin(BuildContext context, LoginInitial state) {
-    if (state.email == "abdi1122@gmail.com" && state.password == "112233") {
+  _getListener(context, state) {
+    if (state is LoginSuccess) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
