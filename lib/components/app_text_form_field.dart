@@ -4,18 +4,22 @@ import 'package:taabo/utils/text_validators.dart';
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
     required this.label,
-    required this.icon,
+    required this.prefixIcon,
+    this.suffixWidget,
     this.initialvalue,
     this.isReadOnly = false,
+    this.isObscure = false,
     this.onChanged,
     this.textInputAction = TextInputAction.next,
     super.key,
   });
 
   final String label;
-  final IconData icon;
+  final IconData prefixIcon;
+  final Widget? suffixWidget;
   final String? initialvalue;
   final bool isReadOnly;
+  final bool isObscure;
   final Function(String)? onChanged;
   final TextInputAction? textInputAction;
 
@@ -32,9 +36,10 @@ class AppTextFormField extends StatelessWidget {
         textInputAction: textInputAction,
         autofocus: true,
         enabled: !isReadOnly,
+        obscureText: isObscure,
         initialValue: initialvalue,
         readOnly: isReadOnly,
-        decoration: _getTextFormFieldDecoration(label, icon),
+        decoration: _getTextFormFieldDecoration(),
         validator: TextValidators.required,
         onChanged: onChanged,
       ),
@@ -49,11 +54,12 @@ class AppTextFormField extends StatelessWidget {
     );
   }
 
-  InputDecoration _getTextFormFieldDecoration(String label, IconData icon) {
+  InputDecoration _getTextFormFieldDecoration() {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Color(0xFF6B7280)),
-      prefixIcon: Icon(icon, color: const Color(0xFF1e78c1)),
+      prefixIcon: Icon(prefixIcon, color: const Color(0xFF1e78c1)),
+      suffix: suffixWidget,
       border: InputBorder.none,
       contentPadding: const EdgeInsets.all(16),
     );

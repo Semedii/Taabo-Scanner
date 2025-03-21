@@ -40,17 +40,17 @@ class DetailsPage extends StatelessWidget {
                       AppTextFormField(
                         label: "Tracking Number",
                         initialvalue: trackingNumber,
-                        icon: Icons.qr_code,
+                        prefixIcon: Icons.qr_code,
                         isReadOnly: true,
                       ),
                       AppTextFormField(
                         label: 'Name',
-                        icon: Icons.person,
+                        prefixIcon: Icons.person,
                         onChanged: cubit.onNameChanged,
                       ),
                       AppTextFormField(
                         label: 'Weight',
-                        icon: Icons.scale,
+                        prefixIcon: Icons.scale,
                         onChanged: cubit.onWeightChanged,
                       ),
                       _buildStoreDropDown(),

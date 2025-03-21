@@ -76,12 +76,21 @@ class LoginPage extends StatelessWidget {
           ),
           AppTextFormField(
             label: "Email",
-            icon: Icons.person,
+            prefixIcon: Icons.person,
             onChanged: cubit.onEmailChanged,
           ),
           AppTextFormField(
             label: "Password",
-            icon: Icons.password,
+            prefixIcon: Icons.lock,
+            isObscure: state.isPasswordObscure,
+            suffixWidget: GestureDetector(
+              onTap: cubit.onIsPasswordObscureChanged,
+              child: Icon(
+                  state.isPasswordObscure
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  color: const Color(0xFF1e78c1)),
+            ),
             onChanged: cubit.onPasswordChanged,
           ),
           Spacer(),
