@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/login/login_cubit.dart';
-import 'package:taabo/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Color(0xFF1e78c1),
       body: BlocProvider(
-        create: (context) => LoginCubit(),
-        child: BlocListener<LoginCubit, LoginState>(
-          listener: _getListener,
-          child: BlocBuilder<LoginCubit, LoginState>(
-            builder: _mapStateToWidget,
-          ),
+        create: (context) => LoginCubit(authProvider),
+        child: BlocBuilder<LoginCubit, LoginState>(
+          builder: _mapStateToWidget,
         ),
       ),
     );
@@ -145,16 +144,5 @@ class LoginPage extends StatelessWidget {
       color: Colors.white,
       fontColor: Color(0xFF1e78c1),
     );
-  }
-
-  _getListener(context, state) {
-    if (state is LoginSuccess) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
-    }
   }
 }
