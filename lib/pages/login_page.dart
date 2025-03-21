@@ -107,7 +107,7 @@ class LoginPage extends StatelessWidget {
 
   void onLogin(BuildContext context, LoginInitial state) {
     if (state.email == "abdi1122@gmail.com" && state.password == "112233") {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => HomePage(),
