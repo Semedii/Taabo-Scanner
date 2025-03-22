@@ -10,9 +10,9 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthProvider _authProvider;
   LoginCubit(this._authProvider) : super(LoginInitial());
 
-  void onEmailChanged(String? email) {
+  void onUsernameChanged(String? username) {
     var lastState = state as LoginInitial;
-    emit(lastState.copyWith(email: email));
+    emit(lastState.copyWith(username: username));
   }
 
   void onPasswordChanged(String? password) {
@@ -31,7 +31,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     try {
       final response = await _authService.login(
-        currentState.email!,
+        currentState.username!,
         currentState.password!,
       );
       await _authProvider.login(response["token"]);

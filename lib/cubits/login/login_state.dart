@@ -4,24 +4,24 @@ part of 'login_cubit.dart';
 sealed class LoginState {}
 
 final class LoginInitial extends LoginState {
-  final String? email;
+  final String? username;
   final String? password;
   final bool isPasswordObscure;
 
   LoginInitial({
-    this.email,
+    this.username,
     this.password,
     this.isPasswordObscure = true,
   });
 
   LoginInitial copyWith({
-    String? email,
+    String? username,
     String? password,
     bool? isPasswordObscure,
   }) {
     return LoginInitial(
-      email: email ?? this.email,
-      password: password ?? this.email,
+      username: username ?? this.username,
+      password: password ?? this.password,
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
     );
   }

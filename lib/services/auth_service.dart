@@ -5,13 +5,13 @@ import 'package:taabo/services/secure_storage_service.dart';
 
 class AuthService {
   final SecureStorageService _secureStorage = SecureStorageService();
-  final String baseUrl = "https://reqres.in";
+  final String baseUrl = "https://tajmexapp.onrender.com";
 
-  login(String email, String password) async {
-    final response = await http.post(Uri.parse('$baseUrl/api/login'),
+  login(String username, String password) async {
+    final response = await http.post(Uri.parse('$baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': email,
+          'username': username,
           'password': password,
         }));
 

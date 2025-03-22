@@ -60,7 +60,7 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   children: [
                     _buildLoginText(),
-                    _buildEmailTextField(cubit),
+                    _buildUsernameTextField(cubit),
                     _buildPasswordTextField(state, cubit),
                     Spacer(),
                     _buildLoginButton(cubit)
@@ -121,11 +121,11 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  AppTextFormField _buildEmailTextField(LoginCubit cubit) {
+  AppTextFormField _buildUsernameTextField(LoginCubit cubit) {
     return AppTextFormField(
-      label: "Email",
+      label: "Username",
       prefixIcon: Icons.person,
-      onChanged: cubit.onEmailChanged,
+      onChanged: cubit.onUsernameChanged,
       validator: TextValidators.required,
     );
   }
