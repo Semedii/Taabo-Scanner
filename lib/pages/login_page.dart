@@ -6,10 +6,11 @@ import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/login/login_cubit.dart';
+import 'package:taabo/utils/text_validators.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
+  LoginPage({super.key});
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -54,14 +55,17 @@ class LoginPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.5,
-              child: Column(
-                children: [
-                  _buildLoginText(),
-                  _buildEmailTextField(cubit),
-                  _buildPasswordTextField(state, cubit),
-                  Spacer(),
-                  _buildLoginButton(cubit)
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _buildLoginText(),
+                    _buildEmailTextField(cubit),
+                    _buildPasswordTextField(state, cubit),
+                    Spacer(),
+                    _buildLoginButton(cubit)
+                  ],
+                ),
               ),
             ),
           ),
@@ -122,6 +126,7 @@ class LoginPage extends StatelessWidget {
       label: "Email",
       prefixIcon: Icons.person,
       onChanged: cubit.onEmailChanged,
+      validator: TextValidators.required,
     );
   }
 
@@ -138,13 +143,18 @@ class LoginPage extends StatelessWidget {
             color: const Color(0xFF1e78c1)),
       ),
       onChanged: cubit.onPasswordChanged,
+      validator: TextValidators.required,
     );
   }
 
   AppButton _buildLoginButton(LoginCubit cubit) {
     return AppButton(
       text: "Login",
-      onPressed: cubit.onLogin,
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          cubit.onLogin();
+        }
+      },
       color: Colors.white,
       fontColor: Color(0xFF1e78c1),
     );

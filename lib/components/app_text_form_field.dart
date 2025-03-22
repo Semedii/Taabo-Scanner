@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taabo/utils/text_validators.dart';
 
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
@@ -11,6 +10,7 @@ class AppTextFormField extends StatelessWidget {
     this.isObscure = false,
     this.onChanged,
     this.textInputAction = TextInputAction.next,
+    this.validator,
     super.key,
   });
 
@@ -22,6 +22,7 @@ class AppTextFormField extends StatelessWidget {
   final bool isObscure;
   final Function(String)? onChanged;
   final TextInputAction? textInputAction;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class AppTextFormField extends StatelessWidget {
         initialValue: initialvalue,
         readOnly: isReadOnly,
         decoration: _getTextFormFieldDecoration(),
-        validator: TextValidators.required,
+        validator: validator,
         onChanged: onChanged,
       ),
     );

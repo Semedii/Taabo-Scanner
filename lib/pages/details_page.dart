@@ -4,6 +4,7 @@ import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/details/details_cubit.dart';
 import 'package:taabo/utils/store_enums.dart';
+import 'package:taabo/utils/text_validators.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({required this.trackingNumber, super.key});
@@ -52,6 +53,7 @@ class DetailsPage extends StatelessWidget {
                         label: 'Weight',
                         prefixIcon: Icons.scale,
                         onChanged: cubit.onWeightChanged,
+                        validator: TextValidators.required,
                       ),
                       _buildStoreDropDown(),
                       Spacer(),
