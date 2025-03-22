@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:taabo/model/package.dart';
 
-class PackageCard extends StatelessWidget {
-  const PackageCard({
-    required this.package,
+class ParcelCard extends StatelessWidget {
+  const ParcelCard({
+    required this.parcel,
     required this.isSelected,
     required this.onSelect,
     super.key,
   });
 
-  final Package package;
+  final Parcel parcel;
   final bool isSelected;
   final VoidCallback onSelect;
 
@@ -44,13 +44,13 @@ class PackageCard extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _getTitleAndValue("Tracking Number", package.trackingNumber),
+                  _getTitleAndValue("Tracking Number", parcel.refNumber),
                   const SizedBox(height: 8),
-                  _getTitleAndValue("Name", package.name ?? ""),
+                  _getTitleAndValue("Name", parcel.recipientName ?? ""),
                   const SizedBox(height: 8),
-                  _getTitleAndValue("Weight", "${package.weight} kg"),
+                  _getTitleAndValue("Weight", "${parcel.kg} kg"),
                   const SizedBox(height: 8),
-                  _getTitleAndValue("Store", package.store ?? ""),
+                  _getTitleAndValue("Store", parcel.store ?? ""),
                 ],
               ),
             ),

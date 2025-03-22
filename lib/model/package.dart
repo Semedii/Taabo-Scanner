@@ -1,13 +1,13 @@
-class Package {
-  String trackingNumber;
-  String? name;
-  double weight;
+class Parcel {
+  String refNumber;
+  String? recipientName;
+  double kg;
   String? store;
 
-  Package({
-    required this.trackingNumber,
-    this.name,
-    required this.weight,
+  Parcel({
+    required this.refNumber,
+    this.recipientName,
+    required this.kg,
     this.store,
   });
 }

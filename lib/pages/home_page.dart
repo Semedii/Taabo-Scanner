@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
-import 'package:taabo/components/package_card.dart';
-import 'package:taabo/cubits/package/package_cubit.dart';
+import 'package:taabo/components/parcel_card.dart';
+import 'package:taabo/cubits/package/parcel_cubit.dart';
 import 'package:taabo/model/package.dart';
 import 'package:taabo/pages/scanner_page.dart';
 
@@ -13,37 +13,37 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Package> availablePackages = [
-      Package(
-        trackingNumber: "1232123212321232123",
-        name: "Abdisamad Ibrahim",
-        weight: 12,
+    List<Parcel> availablePackages = [
+      Parcel(
+        refNumber: "1232123212321232123",
+        recipientName: "Abdisamad Ibrahim",
+        kg: 12,
         store: "Shein",
       ),
-      Package(
-        trackingNumber: "1232123212321232123",
-        name: "Abdisamad Ibrahim",
-        weight: 12,
+      Parcel(
+        refNumber: "1232123212321232123",
+        recipientName: "Abdisamad Ibrahim",
+        kg: 12,
       ),
-      Package(
-        trackingNumber: "1232123212321232123",
-        weight: 12,
+      Parcel(
+        refNumber: "1232123212321232123",
+        kg: 12,
         store: "AMAZON",
       ),
-      Package(
-        trackingNumber: "1232123212321232123",
-        weight: 10,
+      Parcel(
+        refNumber: "1232123212321232123",
+        kg: 10,
       ),
-      Package(
-        trackingNumber: "1232123212321232123",
-        name: "Abdisamad Yusuf",
-        weight: 12,
+      Parcel(
+        refNumber: "1232123212321232123",
+        recipientName: "Abdisamad Yusuf",
+        kg: 12,
         store: "ALIBABA",
       ),
     ];
 
     return BlocProvider(
-      create: (context) => PackageCubit()..loadPackages(availablePackages),
+      create: (context) => ParcelCubit()..loadParcels(availablePackages),
       child: Scaffold(
         backgroundColor: const Color(0xFFF9FAFB),
         appBar: AppBar(
@@ -65,29 +65,28 @@ class HomePage extends StatelessWidget {
                 color: Colors.white,
               )),
         ),
-        body: BlocBuilder<PackageCubit, PackageState>(
+        body: BlocBuilder<ParcelCubit, ParcelState>(
           builder: (context, state) {
-            if (state is PackageLoaded) {
+            if (state is ParcelLoaded) {
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ...state.packages.map(
-                          (package) => PackageCard(
-                            package: package,
-                            isSelected:
-                                state.selectedPackages[package] ?? false,
+                        ...state.parcels.map(
+                          (parcel) => ParcelCard(
+                            parcel: parcel,
+                            isSelected: state.selectedParcels[parcel] ?? false,
                             onSelect: () =>
-                                BlocProvider.of<PackageCubit>(context)
-                                    .togglePackageSelection(package),
+                                BlocProvider.of<ParcelCubit>(context)
+                                    .togglePackageSelection(parcel),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  if (state.selectedPackages.containsValue(true))
+                  if (state.selectedParcels.containsValue(true))
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: AppButton(onPressed: () {}, text: "Submit"),
