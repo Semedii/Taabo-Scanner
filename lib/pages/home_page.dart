@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/package_card.dart';
 import 'package:taabo/cubits/package/package_cubit.dart';
 import 'package:taabo/model/package.dart';
@@ -59,19 +60,31 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<PackageCubit, PackageState>(
           builder: (context, state) {
             if (state is PackageLoaded) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ...state.packages.map(
-                      (package) => PackageCard(
-                        package: package,
-                        isSelected: state.selectedPackages[package] ?? false,
-                        onSelect: () => BlocProvider.of<PackageCubit>(context)
-                            .togglePackageSelection(package),
-                      ),
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ...state.packages.map(
+                          (package) => PackageCard(
+                            package: package,
+                            isSelected:
+                                state.selectedPackages[package] ?? false,
+                            onSelect: () =>
+                                BlocProvider.of<PackageCubit>(context)
+                                    .togglePackageSelection(package),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  if (state.selectedPackages.containsValue(true))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: AppButton(onPressed: () {}, text: "Submit"),
+                    )
+                ],
               );
             }
             return Center(child: CircularProgressIndicator());
