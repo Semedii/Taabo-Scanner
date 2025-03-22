@@ -111,6 +111,10 @@ class DetailsPage extends StatelessWidget {
         inputDecorationTheme: _getDropInputDecoration(),
         dropdownMenuEntries: [
           DropdownMenuEntry<StoreEnums>(
+            value: StoreEnums.EMPTY,
+            label: "<EMPTY>",
+          ),
+          DropdownMenuEntry<StoreEnums>(
             value: StoreEnums.SHEIN,
             label: StoreEnums.SHEIN.name,
             leadingIcon: Image.asset(
