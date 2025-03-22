@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/package_card.dart';
 import 'package:taabo/cubits/package/package_cubit.dart';
@@ -56,6 +58,12 @@ class HomePage extends StatelessWidget {
           backgroundColor: const Color(0xFF1e78c1),
           centerTitle: true,
           elevation: 0,
+          leading: IconButton(
+              onPressed: () => _showBottomDrawer(context),
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+              )),
         ),
         body: BlocBuilder<PackageCubit, PackageState>(
           builder: (context, state) {
@@ -104,6 +112,40 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showBottomDrawer(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Logout",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 16),
+              AppButton(
+                onPressed: () {
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                  Navigator.pop(context);
+                },
+                text: "Confirm Logout",
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
