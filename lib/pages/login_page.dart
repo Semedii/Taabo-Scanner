@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
@@ -16,8 +17,11 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Color(0xFF1e78c1),
       body: BlocProvider(
         create: (context) => LoginCubit(authProvider),
-        child: BlocBuilder<LoginCubit, LoginState>(
-          builder: _mapStateToWidget,
+        child: BlocListener<LoginCubit, LoginState>(
+          listener: _getLoginFailureListener,
+          child: BlocBuilder<LoginCubit, LoginState>(
+            builder: _mapStateToWidget,
+          ),
         ),
       ),
     );
@@ -144,5 +148,21 @@ class LoginPage extends StatelessWidget {
       color: Colors.white,
       fontColor: Color(0xFF1e78c1),
     );
+  }
+
+  _getLoginFailureListener(context, state) {
+    String? error;
+    if (state is LoginFailure) {
+      if (state.errorMessage == "Exception: user not found") {
+        error = "Invalid Email or Password!";
+      }
+      Fluttertoast.showToast(
+          msg: error ?? state.errorMessage,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 }
