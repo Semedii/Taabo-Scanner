@@ -54,6 +54,22 @@ class ParcelCubit extends Cubit<ParcelState> {
     loadParcels();
   }
 
+  void onIsSelectAllChanged(bool? isSelectAll) {
+    final currentState = state as ParcelLoaded;
+
+    final updatedSelections = Map<Parcel, bool>.fromIterable(
+      currentState.parcels,
+      key: (parcel) => parcel,
+      value: (parcel) => isSelectAll ?? false,
+    );
+
+    emit(ParcelLoaded(
+      parcels: currentState.parcels,
+      selectedParcels: updatedSelections,
+      isSelectAll: isSelectAll ?? false,
+    ));
+  }
+
   int getTotalSelectedParcels() {
     final state = this.state;
     if (state is ParcelLoaded) {

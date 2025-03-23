@@ -126,7 +126,11 @@ class HomePage extends StatelessWidget {
             onRefresh: BlocProvider.of<ParcelCubit>(context).loadParcels,
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  if (state.parcels.length > 0) ...{
+                    _buidlSelectAllButton(context, state),
+                  },
                   ...state.parcels.map(
                     (parcel) => ParcelCard(
                       parcel: parcel,
@@ -152,6 +156,26 @@ class HomePage extends StatelessWidget {
       );
     }
     return Center(child: CircularProgressIndicator());
+  }
+
+  Row _buidlSelectAllButton(BuildContext context, ParcelLoaded state) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          "Select All",
+          style: TextStyle(
+            color: Color(0xFF1e78c1),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Checkbox(
+          value: state.isSelectAll,
+          onChanged: BlocProvider.of<ParcelCubit>(context).onIsSelectAllChanged,
+          activeColor: Color(0xFF1e78c1),
+        ),
+      ],
+    );
   }
 
   Future<dynamic> _onShipPressed(BuildContext context) {
