@@ -8,7 +8,7 @@ part 'parcel_state.dart';
 class ParcelCubit extends Cubit<ParcelState> {
   ParcelCubit() : super(ParcelInitial());
 
-  void loadParcels() async {
+  Future<void> loadParcels() async {
     emit(ParcelLoading());
     List<Parcel> parcels = await ParcelService().getAllParcels();
     final selectedParcels = Map<Parcel, bool>.fromIterable(

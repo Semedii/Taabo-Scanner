@@ -122,18 +122,21 @@ class HomePage extends StatelessWidget {
       return Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                ...state.parcels.map(
-                  (parcel) => ParcelCard(
-                    parcel: parcel,
-                    isSelected: state.selectedParcels[parcel] ?? false,
-                    onSelect: () => BlocProvider.of<ParcelCubit>(context)
-                        .togglePackageSelection(parcel),
+          RefreshIndicator(
+            onRefresh: BlocProvider.of<ParcelCubit>(context).loadParcels,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...state.parcels.map(
+                    (parcel) => ParcelCard(
+                      parcel: parcel,
+                      isSelected: state.selectedParcels[parcel] ?? false,
+                      onSelect: () => BlocProvider.of<ParcelCubit>(context)
+                          .togglePackageSelection(parcel),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           if (state.selectedParcels.containsValue(true))
