@@ -1,4 +1,5 @@
 class Parcel {
+  int? id;
   String refNumber;
   String? recipientName;
   double kg;
@@ -6,6 +7,7 @@ class Parcel {
   int cartoons;
 
   Parcel({
+    this.id,
     required this.refNumber,
     this.recipientName,
     required this.kg,
@@ -15,6 +17,7 @@ class Parcel {
 
   factory Parcel.fromJson(Map<String, dynamic> json) {
     return Parcel(
+      id: json["ID"],
       refNumber: json['RefNumber'],
       recipientName: json['RecipientName'],
       kg: json['KG'].toDouble(),

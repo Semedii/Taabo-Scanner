@@ -86,11 +86,9 @@ class HomePage extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => ScannerPage(
                         onSelect: (trackingNumber) {
-                          print("www2 $trackingNumber");
                           Parcel selectedParcel = state.parcels.firstWhere(
                               (parcel) => parcel.refNumber == trackingNumber);
 
-                          print("aaaaa ${selectedParcel.recipientName}");
                           cubit.togglePackageSelection(selectedParcel);
                           Navigator.pop(context);
                         },
