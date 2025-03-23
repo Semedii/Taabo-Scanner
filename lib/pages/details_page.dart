@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/details/details_cubit.dart';
@@ -24,58 +25,65 @@ class DetailsPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => DetailsCubit(),
-        child: BlocBuilder<DetailsCubit, DetailsState>(
-          builder: (context, state) {
-            state as DetailsInitial;
-            final cubit = BlocProvider.of<DetailsCubit>(context);
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Container(
-                  color: const Color(0xFFF9FAFB),
-                  padding: const EdgeInsets.all(16),
-                  height: MediaQuery.of(context).size.height - 80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppTextFormField(
-                        label: "Tracking Number",
-                        initialvalue: trackingNumber,
-                        prefixIcon: Icons.qr_code,
-                        isReadOnly: true,
-                      ),
-                      AppTextFormField(
-                        label: 'Name',
-                        prefixIcon: Icons.person,
-                        onChanged: cubit.onNameChanged,
-                      ),
-                      AppTextFormField(
-                        label: 'Weight',
-                        prefixIcon: Icons.scale,
-                        textInputType: TextInputType.number,
-                        onChanged: (value) => cubit.onWeightChanged(
-                          double.parse(value),
+        child: BlocListener<DetailsCubit, DetailsState>(
+          listener: _getListener,
+          child: BlocBuilder<DetailsCubit, DetailsState>(
+              builder: (context, state) {
+            if (state is DetailsInitial) {
+              final cubit = BlocProvider.of<DetailsCubit>(context);
+              return Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Container(
+                    color: const Color(0xFFF9FAFB),
+                    padding: const EdgeInsets.all(16),
+                    height: MediaQuery.of(context).size.height - 80,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppTextFormField(
+                          label: "Tracking Number",
+                          initialvalue: trackingNumber,
+                          prefixIcon: Icons.qr_code,
+                          isReadOnly: true,
                         ),
-                        validator: TextValidators.required,
-                      ),
-                      AppTextFormField(
-                        label: 'Cartoons',
-                        prefixIcon: Icons.mail,
-                        textInputType: TextInputType.number,
-                        onChanged: (value) => cubit.onCartoonsChanged(
-                          int.parse(value),
+                        AppTextFormField(
+                          label: 'Name',
+                          prefixIcon: Icons.person,
+                          onChanged: cubit.onNameChanged,
                         ),
-                        validator: TextValidators.required,
-                      ),
-                      _buildStoreDropDown(cubit),
-                      Spacer(),
-                      _buildSubmitButton(context),
-                    ],
+                        AppTextFormField(
+                          label: 'Weight',
+                          prefixIcon: Icons.scale,
+                          textInputType: TextInputType.number,
+                          onChanged: (value) => cubit.onWeightChanged(
+                            double.parse(value),
+                          ),
+                          validator: TextValidators.required,
+                        ),
+                        AppTextFormField(
+                          label: 'Cartoons',
+                          prefixIcon: Icons.mail,
+                          textInputType: TextInputType.number,
+                          onChanged: (value) => cubit.onCartoonsChanged(
+                            int.parse(value),
+                          ),
+                          validator: TextValidators.required,
+                        ),
+                        _buildStoreDropDown(cubit),
+                        Spacer(),
+                        _buildSubmitButton(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            }
+            if (state is DetailsLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else
+              return SizedBox.shrink();
+          }),
         ),
       ),
     );
@@ -204,5 +212,27 @@ class DetailsPage extends StatelessWidget {
                 }
               })),
     );
+  }
+
+  _getListener(context, state) {
+    if (state is DetailsSuccess) {
+      Fluttertoast.showToast(
+          msg: "Added Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    }
+    if (state is DetailsFailure) {
+      Fluttertoast.showToast(
+          msg: "Error Happened Please try again",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 }

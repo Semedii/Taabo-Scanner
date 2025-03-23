@@ -28,14 +28,24 @@ class DetailsCubit extends Cubit<DetailsState> {
     emit(lastState.copyWith(store: store));
   }
 
-  onSubmitButton(String trackingNumber) {
+  onSubmitButton(String trackingNumber) async {
     var lastState = state as DetailsInitial;
-    Parcel newParcel = Parcel(
+    emit(DetailsLoading());
+    try {
+      Parcel newParcel = Parcel(
         refNumber: trackingNumber,
         recipientName: lastState.name,
         store: lastState.store,
         kg: lastState.weight!,
-        cartoons: lastState.cartoons!);
-    ParcelService().addNewParcel(newParcel);
+        cartoons: lastState.cartoons!,
+      );
+      await ParcelService().addNewParcel(newParcel);
+      emit(DetailsSuccess());
+    } catch (e, stackTrace) {
+      print('Error while submitting parcel: $e');
+      print('Stack trace: $stackTrace');
+      emit(DetailsFailure());
+      emit(lastState);
+    }
   }
 }

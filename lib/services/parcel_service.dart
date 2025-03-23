@@ -42,26 +42,32 @@ class ParcelService {
   }
 
   Future<void> addNewParcel(Parcel parcel) async {
+    final String? jwtToken = await _secureStorage.read('auth_token');
+
+    if (jwtToken == null) {
+      throw Exception('JWT token is not available');
+    }
+
     try {
-      final String? jwtToken = await _secureStorage.read('auth_token');
+      final response = await http.post(
+        Uri.parse("$baseUrl/parcels"),
+        headers: {
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json', // Optional, depending on the API
+        },
+        body: jsonEncode(parcel.toJson()),
+      );
 
-      if (jwtToken == null) {
-        print('JWT token is not available');
-        return;
-      }
-
-      final response = await http.post(Uri.parse("$baseUrl/parcels"),
-          headers: {
-            'Authorization': 'Bearer $jwtToken',
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(parcel.toJson()));
-
-      if (response.statusCode == 200) {
-        print("waryaa success ${response.body}");
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print("Parcel added successfully: ${response.body}");
+      } else {
+        throw Exception(
+            'Failed to add parcel. Status code: ${response.statusCode}, Response: ${response.body}');
       }
     } catch (e) {
-      print("error happened : $e");
+      // Catch any network-related issues or other exceptions
+      print("Error while making HTTP request: $e");
+      rethrow; // Re-throw the exception to be handled by the calling function
     }
   }
 }
