@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
+import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/components/parcel_card.dart';
 import 'package:taabo/cubits/package/parcel_cubit.dart';
 import 'package:taabo/pages/details_page.dart';
@@ -139,6 +140,7 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: AppButton(
                   onPressed: () {
+                    _onShipPressed(context);
                     BlocProvider.of<ParcelCubit>(context).onShip();
                   },
                   text: "Ship"),
@@ -147,6 +149,91 @@ class HomePage extends StatelessWidget {
       );
     }
     return Center(child: CircularProgressIndicator());
+  }
+
+  Future<dynamic> _onShipPressed(BuildContext context) {
+    final cubit = BlocProvider.of<ParcelCubit>(context);
+    final totalParcels = cubit.getTotalSelectedParcels();
+    final totalCartoons = cubit.getTotalSelectedCartoons();
+    final totalWeight = cubit.getTotalSelectedWeight();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0)), // Rounded corners
+          elevation: 4, // Subtle shadow
+          child: Container(
+            padding: const EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF9FAFB), // Background color
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Please Enter Flight Information",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1e78c1), // Primary color
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  AppTextFormField(
+                    label: "Flight Number",
+                    prefixIcon: Icons.flight,
+                    onChanged: (value) {}, // Handle input
+                  ),
+                  const SizedBox(height: 16),
+                  _getTitleAndValue("Total Parcels", "$totalParcels"),
+                  const SizedBox(height: 8),
+                  _getTitleAndValue("Total Cartoons", "$totalCartoons"),
+                  const SizedBox(height: 8),
+                  _getTitleAndValue("Total Weight", "$totalWeight kg"),
+                  const SizedBox(height: 24),
+                  AppButton(
+                    text: "Confirm",
+                    onPressed: () {
+                      // Handle confirmation
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _getTitleAndValue(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[700],
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1e78c1), // Primary color
+          ),
+        ),
+      ],
+    );
   }
 
   void _showBottomDrawer(BuildContext context) {

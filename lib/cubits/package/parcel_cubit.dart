@@ -40,4 +40,36 @@ class ParcelCubit extends Cubit<ParcelState> {
       selectedIds.add(parcel.id!);
     }
   }
+
+  int getTotalSelectedParcels() {
+    final state = this.state;
+    if (state is ParcelLoaded) {
+      return state.selectedParcels.entries
+          .where((entry) => entry.value == true)
+          .length;
+    }
+    return 0;
+  }
+
+  int getTotalSelectedCartoons() {
+    final state = this.state;
+    if (state is ParcelLoaded) {
+      return state.selectedParcels.entries
+          .where((entry) => entry.value == true)
+          .map((entry) => entry.key.cartoons)
+          .fold(0, (sum, cartoons) => sum + cartoons);
+    }
+    return 0;
+  }
+
+  double getTotalSelectedWeight() {
+    final state = this.state;
+    if (state is ParcelLoaded) {
+      return state.selectedParcels.entries
+          .where((entry) => entry.value == true)
+          .map((entry) => entry.key.kg)
+          .fold(0.0, (sum, kg) => sum + kg);
+    }
+    return 0.0;
+  }
 }
