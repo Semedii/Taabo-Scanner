@@ -70,4 +70,43 @@ class ParcelService {
       rethrow; // Re-throw the exception to be handled by the calling function
     }
   }
+
+  Future<void> updateParcels({
+    required List<int> ids,
+    required String status,
+    required String location,
+    required String flightNumber,
+  }) async {
+    final String? jwtToken = await _secureStorage.read('auth_token');
+
+    if (jwtToken == null) {
+      throw Exception('JWT token is not available');
+    }
+
+    try {
+      final response = await http.put(
+        Uri.parse("$baseUrl/parcels/update"),
+        headers: {
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'ids': ids,
+          'status': status,
+          'location': location,
+          'flightNumber': flightNumber,
+        }),
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print("Parcels updated successfully: ${response.body}");
+      } else {
+        throw Exception(
+            'Failed to update parcels. Status code: ${response.statusCode}, Response: ${response.body}');
+      }
+    } catch (e) {
+      print("Error while making HTTP request: $e");
+      rethrow;
+    }
+  }
 }

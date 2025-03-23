@@ -8,10 +8,11 @@ import 'package:taabo/components/parcel_card.dart';
 import 'package:taabo/cubits/package/parcel_cubit.dart';
 import 'package:taabo/pages/details_page.dart';
 import 'package:taabo/pages/scanner_page.dart';
+import 'package:taabo/utils/text_validators.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+  HomePage({super.key});
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -141,7 +142,6 @@ class HomePage extends StatelessWidget {
               child: AppButton(
                   onPressed: () {
                     _onShipPressed(context);
-                    BlocProvider.of<ParcelCubit>(context).onShip();
                   },
                   text: "Ship"),
             )
@@ -171,39 +171,45 @@ class HomePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.0),
             ),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Please Enter Flight Information",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1e78c1), // Primary color
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Please Enter Flight Information",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1e78c1), // Primary color
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  AppTextFormField(
-                    label: "Flight Number",
-                    prefixIcon: Icons.flight,
-                    onChanged: (value) {}, // Handle input
-                  ),
-                  const SizedBox(height: 16),
-                  _getTitleAndValue("Total Parcels", "$totalParcels"),
-                  const SizedBox(height: 8),
-                  _getTitleAndValue("Total Cartoons", "$totalCartoons"),
-                  const SizedBox(height: 8),
-                  _getTitleAndValue("Total Weight", "$totalWeight kg"),
-                  const SizedBox(height: 24),
-                  AppButton(
-                    text: "Confirm",
-                    onPressed: () {
-                      // Handle confirmation
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    AppTextFormField(
+                      label: "Flight Number",
+                      prefixIcon: Icons.flight,
+                      onChanged: cubit.onFlightNumberChanged,
+                      validator: TextValidators.required,
+                    ),
+                    const SizedBox(height: 16),
+                    _getTitleAndValue("Total Parcels", "$totalParcels"),
+                    const SizedBox(height: 8),
+                    _getTitleAndValue("Total Cartoons", "$totalCartoons"),
+                    const SizedBox(height: 8),
+                    _getTitleAndValue("Total Weight", "$totalWeight kg"),
+                    const SizedBox(height: 24),
+                    AppButton(
+                      text: "Confirm",
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          cubit.onShipConfirm();
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

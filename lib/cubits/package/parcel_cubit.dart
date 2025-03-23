@@ -9,6 +9,7 @@ class ParcelCubit extends Cubit<ParcelState> {
   ParcelCubit() : super(ParcelInitial());
 
   void loadParcels() async {
+    emit(ParcelLoading());
     List<Parcel> parcels = await ParcelService().getAllParcels();
     final selectedParcels = Map<Parcel, bool>.fromIterable(
       parcels,
@@ -28,7 +29,12 @@ class ParcelCubit extends Cubit<ParcelState> {
     }
   }
 
-  void onShip() async {
+  void onFlightNumberChanged(String? flightNumber) {
+    var lastState = state as ParcelLoaded;
+    emit(lastState.copyWith(flightNumber: flightNumber));
+  }
+
+  void onShipConfirm() async {
     var currentState = state as ParcelLoaded;
     List<int> selectedIds = [];
     var selectedParcelsToShip = currentState.selectedParcels.entries
@@ -39,6 +45,13 @@ class ParcelCubit extends Cubit<ParcelState> {
     for (var parcel in selectedParcelsToShip) {
       selectedIds.add(parcel.id!);
     }
+    await ParcelService().updateParcels(
+      ids: selectedIds,
+      status: "Shipped",
+      location: "onAir",
+      flightNumber: currentState.flightNumber!,
+    );
+    loadParcels();
   }
 
   int getTotalSelectedParcels() {
