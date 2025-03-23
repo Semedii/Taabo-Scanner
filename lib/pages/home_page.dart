@@ -5,7 +5,6 @@ import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/parcel_card.dart';
 import 'package:taabo/cubits/package/parcel_cubit.dart';
-import 'package:taabo/model/package.dart';
 import 'package:taabo/pages/details_page.dart';
 import 'package:taabo/pages/scanner_page.dart';
 
@@ -86,11 +85,22 @@ class HomePage extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => ScannerPage(
                         onSelect: (trackingNumber) {
-                          Parcel selectedParcel = state.parcels.firstWhere(
-                              (parcel) => parcel.refNumber == trackingNumber);
+                          try {
+                            final selectedParcel = state.parcels.firstWhere(
+                              (parcel) => parcel.refNumber == trackingNumber,
+                            );
 
-                          cubit.togglePackageSelection(selectedParcel);
-                          Navigator.pop(context);
+                            cubit.togglePackageSelection(selectedParcel);
+                            Navigator.pop(context);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'No parcel found with tracking number: $trackingNumber'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         },
                       )));
         }
