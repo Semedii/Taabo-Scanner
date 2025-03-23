@@ -76,12 +76,14 @@ class ParcelCard extends StatelessWidget {
             fontSize: 14,
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : const Color(0xFF1e78c1),
-            fontSize: 14,
+        Flexible(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isSelected ? Colors.white : const Color(0xFF1e78c1),
+              fontSize: 14,
+            ),
           ),
         ),
       ],

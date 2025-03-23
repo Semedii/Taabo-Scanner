@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:taabo/model/package.dart';
+import 'package:taabo/services/parcel_service.dart';
 
 part 'parcel_state.dart';
 
 class ParcelCubit extends Cubit<ParcelState> {
   ParcelCubit() : super(ParcelInitial());
 
-  void loadParcels(List<Parcel> parcels) {
+  void loadParcels(List<Parcel> ss) async {
+    List<Parcel> parcels = await ParcelService().getAllParcels();
     final selectedParcels = Map<Parcel, bool>.fromIterable(
       parcels,
       key: (parcel) => parcel,
