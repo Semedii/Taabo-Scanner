@@ -16,103 +16,125 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ParcelCubit()..loadParcels(),
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF9FAFB),
-        appBar: AppBar(
-          title: const Text(
-            'TAJMEX SCANNER',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          backgroundColor: const Color(0xFF1e78c1),
-          centerTitle: true,
-          elevation: 0,
-          leading: IconButton(
-              onPressed: () => _showBottomDrawer(context),
-              icon: Icon(
-                Icons.menu,
-                color: Colors.white,
-              )),
-          actions: [
-            GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ScannerPage(
-                            onSelect: (trackingNumber) {},
-                          ))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.barcode_reader,
+      child: BlocBuilder<ParcelCubit, ParcelState>(
+        builder: (context, state) {
+          ParcelCubit cubit = BlocProvider.of<ParcelCubit>(context);
+          return Scaffold(
+            backgroundColor: const Color(0xFFF9FAFB),
+            appBar: AppBar(
+              title: const Text(
+                'TAJMEX SCANNER',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-            )
-          ],
-        ),
-        body: BlocBuilder<ParcelCubit, ParcelState>(
-          builder: (context, state) {
-            if (state is ParcelLoaded) {
-              return Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ...state.parcels.map(
-                          (parcel) => ParcelCard(
-                            parcel: parcel,
-                            isSelected: state.selectedParcels[parcel] ?? false,
-                            onSelect: () =>
-                                BlocProvider.of<ParcelCubit>(context)
-                                    .togglePackageSelection(parcel),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state.selectedParcels.containsValue(true))
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: AppButton(onPressed: () {}, text: "Submit"),
-                    )
-                ],
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
+              backgroundColor: const Color(0xFF1e78c1),
+              centerTitle: true,
+              elevation: 0,
+              leading: IconButton(
+                  onPressed: () => _showBottomDrawer(context),
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  )),
+              actions: [
+                if (state is ParcelLoaded && state.parcels.length > 0)
+                  _buildScanButton(context, state, cubit)
+              ],
+            ),
+            body: _buildBody(context, state),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ScannerPage(
+                            onSelect: (trackingNumber) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsPage(
+                                    trackingNumber: trackingNumber!,
+                                  ),
+                                ),
+                              );
+                            },
+                          )),
+                );
+              },
+              backgroundColor: const Color(0xFF1e78c1),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  GestureDetector _buildScanButton(
+      BuildContext context, ParcelLoaded state, ParcelCubit cubit) {
+    return GestureDetector(
+      onTap: () {
+        {
+          Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ScannerPage(
                         onSelect: (trackingNumber) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                trackingNumber: trackingNumber!,
-                              ),
-                            ),
-                          );
+                          print("www2 $trackingNumber");
+                          Parcel selectedParcel = state.parcels.firstWhere(
+                              (parcel) => parcel.refNumber == trackingNumber);
+
+                          print("aaaaa ${selectedParcel.recipientName}");
+                          cubit.togglePackageSelection(selectedParcel);
+                          Navigator.pop(context);
                         },
-                      )),
-            );
-          },
-          backgroundColor: const Color(0xFF1e78c1),
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
+                      )));
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(
+          Icons.barcode_reader,
+          color: Colors.white,
         ),
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context, ParcelState state) {
+    if (state is ParcelLoaded) {
+      return Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ...state.parcels.map(
+                  (parcel) => ParcelCard(
+                    parcel: parcel,
+                    isSelected: state.selectedParcels[parcel] ?? false,
+                    onSelect: () => BlocProvider.of<ParcelCubit>(context)
+                        .togglePackageSelection(parcel),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (state.selectedParcels.containsValue(true))
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: AppButton(onPressed: () {}, text: "Submit"),
+            )
+        ],
+      );
+    }
+    return Center(child: CircularProgressIndicator());
   }
 
   void _showBottomDrawer(BuildContext context) {
