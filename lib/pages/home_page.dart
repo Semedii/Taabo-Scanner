@@ -137,7 +137,11 @@ class HomePage extends StatelessWidget {
           if (state.selectedParcels.containsValue(true))
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
-              child: AppButton(onPressed: () {}, text: "Submit"),
+              child: AppButton(
+                  onPressed: () {
+                    BlocProvider.of<ParcelCubit>(context).onShip();
+                  },
+                  text: "Ship"),
             )
         ],
       );

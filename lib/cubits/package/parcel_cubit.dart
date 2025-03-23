@@ -27,4 +27,17 @@ class ParcelCubit extends Cubit<ParcelState> {
           parcels: state.parcels, selectedParcels: updatedSelections));
     }
   }
+
+  void onShip() async {
+    var currentState = state as ParcelLoaded;
+    List<int> selectedIds = [];
+    var selectedParcelsToShip = currentState.selectedParcels.entries
+        .where((entry) => entry.value == true)
+        .map((entry) => entry.key)
+        .toList();
+
+    for (var parcel in selectedParcelsToShip) {
+      selectedIds.add(parcel.id!);
+    }
+  }
 }
