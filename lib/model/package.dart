@@ -5,6 +5,7 @@ class Parcel {
   double kg;
   String? store;
   int cartoons;
+  String? courierDate;
 
   Parcel({
     this.id,
@@ -13,6 +14,7 @@ class Parcel {
     required this.kg,
     required this.cartoons,
     this.store,
+    this.courierDate,
   });
 
   factory Parcel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Parcel {
       kg: json['KG'].toDouble(),
       store: json['Store'],
       cartoons: json['cartoons'],
+      courierDate: json['CourierDate'],
     );
   }
 

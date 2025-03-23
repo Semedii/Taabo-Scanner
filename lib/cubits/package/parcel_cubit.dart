@@ -11,6 +11,7 @@ class ParcelCubit extends Cubit<ParcelState> {
   Future<void> loadParcels() async {
     emit(ParcelLoading());
     List<Parcel> parcels = await ParcelService().getAllParcels();
+    parcels.sort((a, b) => b.courierDate!.compareTo(a.courierDate!));
     final selectedParcels = Map<Parcel, bool>.fromIterable(
       parcels,
       key: (parcel) => parcel,
