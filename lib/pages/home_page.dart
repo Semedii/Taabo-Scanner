@@ -5,7 +5,6 @@ import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/parcel_card.dart';
 import 'package:taabo/cubits/package/parcel_cubit.dart';
-import 'package:taabo/model/package.dart';
 import 'package:taabo/pages/scanner_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,37 +12,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Parcel> availablePackages = [
-      Parcel(
-        refNumber: "1232123212321232123",
-        recipientName: "Abdisamad Ibrahim",
-        kg: 12,
-        store: "Shein",
-      ),
-      Parcel(
-        refNumber: "1232123212321232123",
-        recipientName: "Abdisamad Ibrahim",
-        kg: 12,
-      ),
-      Parcel(
-        refNumber: "1232123212321232123",
-        kg: 12,
-        store: "AMAZON",
-      ),
-      Parcel(
-        refNumber: "1232123212321232123",
-        kg: 10,
-      ),
-      Parcel(
-        refNumber: "1232123212321232123",
-        recipientName: "Abdisamad Yusuf",
-        kg: 12,
-        store: "ALIBABA",
-      ),
-    ];
-
     return BlocProvider(
-      create: (context) => ParcelCubit()..loadParcels(availablePackages),
+      create: (context) => ParcelCubit()..loadParcels(),
       child: Scaffold(
         backgroundColor: const Color(0xFFF9FAFB),
         appBar: AppBar(

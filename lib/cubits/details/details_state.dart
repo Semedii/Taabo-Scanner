@@ -4,14 +4,14 @@ part of 'details_cubit.dart';
 sealed class DetailsState {}
 
 final class DetailsInitial extends DetailsState {
-  final String? weight;
+  final double? weight;
   final String? name;
   final String? store;
 
   DetailsInitial({this.weight, this.name, this.store});
 
   DetailsInitial copyWith({
-    String? weight,
+    double? weight,
     String? name,
     String? store,
     String? destination,

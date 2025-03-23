@@ -27,12 +27,8 @@ class ParcelService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        for (var data in data["data"]) {
-          Parcel parcel = Parcel(
-              refNumber: data['RefNumber'],
-              recipientName: data["RecipientName"],
-              kg: data["KG"].toDouble(),
-              store: data["Store"]);
+        for (var parcelData in data["data"]) {
+          Parcel parcel = Parcel.fromJson(parcelData);
           parcels.add(parcel);
         }
         return parcels;
@@ -40,7 +36,32 @@ class ParcelService {
         return parcels;
       }
     } catch (e) {
+      print("error happened $e");
       return parcels;
+    }
+  }
+
+  Future<void> addNewParcel(Parcel parcel) async {
+    try {
+      final String? jwtToken = await _secureStorage.read('auth_token');
+
+      if (jwtToken == null) {
+        print('JWT token is not available');
+        return;
+      }
+
+      final response = await http.post(Uri.parse("$baseUrl/parcels"),
+          headers: {
+            'Authorization': 'Bearer $jwtToken',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(parcel.toJson()));
+
+      if (response.statusCode == 200) {
+        print("waryaa success ${response.body}");
+      }
+    } catch (e) {
+      print("error happened : $e");
     }
   }
 }

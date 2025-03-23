@@ -1,19 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:taabo/model/package.dart';
+import 'package:taabo/services/parcel_service.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
   DetailsCubit() : super(DetailsInitial());
 
-  onWeightChanged(String? weight) {
-    var lastState = state as DetailsInitial;
-    emit(lastState.copyWith(weight: weight));
-  }
-
   onNameChanged(String? name) {
     var lastState = state as DetailsInitial;
     emit(lastState.copyWith(name: name));
+  }
+
+  onWeightChanged(double? weight) {
+    var lastState = state as DetailsInitial;
+    emit(lastState.copyWith(weight: weight));
   }
 
   onStoreChanged(String? store) {
@@ -23,7 +25,12 @@ class DetailsCubit extends Cubit<DetailsState> {
 
   onSubmitButton(String trackingNumber) {
     var lastState = state as DetailsInitial;
-    print(
-        "tracking number: $trackingNumber,  \n Weight : ${lastState.weight},  \n name : ${lastState.name}, \n store: ${lastState.store},");
+    Parcel newParcel = Parcel(
+        refNumber: trackingNumber,
+        recipientName: lastState.name,
+        store: lastState.store,
+        kg: lastState.weight!,
+        cartoons: 2);
+    ParcelService().addNewParcel(newParcel);
   }
 }

@@ -52,10 +52,12 @@ class DetailsPage extends StatelessWidget {
                       AppTextFormField(
                         label: 'Weight',
                         prefixIcon: Icons.scale,
-                        onChanged: cubit.onWeightChanged,
+                        onChanged: (value) => cubit.onWeightChanged(
+                          double.parse(value),
+                        ),
                         validator: TextValidators.required,
                       ),
-                      _buildStoreDropDown(),
+                      _buildStoreDropDown(cubit),
                       Spacer(),
                       _buildSubmitButton(context),
                     ],
@@ -87,7 +89,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStoreDropDown() {
+  Widget _buildStoreDropDown(DetailsCubit cubit) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -146,6 +148,7 @@ class DetailsPage extends StatelessWidget {
               label: StoreEnums.OTHER.name,
               leadingIcon: Icon(Icons.question_mark)),
         ],
+        onSelected: (selectedEnum) => cubit.onStoreChanged(selectedEnum?.name),
       ),
     );
   }
@@ -182,7 +185,7 @@ class DetailsPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: Center(
           child: AppButton(
-              text: "Submit",
+              text: "Add",
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   BlocProvider.of<DetailsCubit>(context).onSubmitButton(
