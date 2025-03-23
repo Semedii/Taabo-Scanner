@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/app_text_form_field.dart';
 import 'package:taabo/cubits/details/details_cubit.dart';
+import 'package:taabo/pages/home_page.dart';
 import 'package:taabo/utils/store_enums.dart';
 import 'package:taabo/utils/text_validators.dart';
 
@@ -223,7 +224,8 @@ class DetailsPage extends StatelessWidget {
           timeInSecForIosWeb: 1,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
     if (state is DetailsFailure) {
       Fluttertoast.showToast(
