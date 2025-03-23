@@ -57,6 +57,14 @@ class DetailsPage extends StatelessWidget {
                         ),
                         validator: TextValidators.required,
                       ),
+                      AppTextFormField(
+                        label: 'Cartoons',
+                        prefixIcon: Icons.mail,
+                        onChanged: (value) => cubit.onCartoonsChanged(
+                          int.parse(value),
+                        ),
+                        validator: TextValidators.required,
+                      ),
                       _buildStoreDropDown(cubit),
                       Spacer(),
                       _buildSubmitButton(context),

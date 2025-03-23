@@ -18,6 +18,11 @@ class DetailsCubit extends Cubit<DetailsState> {
     emit(lastState.copyWith(weight: weight));
   }
 
+  onCartoonsChanged(int? cartoons) {
+    var lastState = state as DetailsInitial;
+    emit(lastState.copyWith(cartoons: cartoons));
+  }
+
   onStoreChanged(String? store) {
     var lastState = state as DetailsInitial;
     emit(lastState.copyWith(store: store));
@@ -30,7 +35,7 @@ class DetailsCubit extends Cubit<DetailsState> {
         recipientName: lastState.name,
         store: lastState.store,
         kg: lastState.weight!,
-        cartoons: 2);
+        cartoons: lastState.cartoons!);
     ParcelService().addNewParcel(newParcel);
   }
 }
