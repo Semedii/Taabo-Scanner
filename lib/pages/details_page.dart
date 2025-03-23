@@ -52,6 +52,7 @@ class DetailsPage extends StatelessWidget {
                       AppTextFormField(
                         label: 'Weight',
                         prefixIcon: Icons.scale,
+                        textInputType: TextInputType.number,
                         onChanged: (value) => cubit.onWeightChanged(
                           double.parse(value),
                         ),
@@ -60,6 +61,7 @@ class DetailsPage extends StatelessWidget {
                       AppTextFormField(
                         label: 'Cartoons',
                         prefixIcon: Icons.mail,
+                        textInputType: TextInputType.number,
                         onChanged: (value) => cubit.onCartoonsChanged(
                           int.parse(value),
                         ),

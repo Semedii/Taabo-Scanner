@@ -11,6 +11,7 @@ class AppTextFormField extends StatelessWidget {
     this.onChanged,
     this.textInputAction = TextInputAction.next,
     this.validator,
+    this.textInputType,
     super.key,
   });
 
@@ -22,6 +23,7 @@ class AppTextFormField extends StatelessWidget {
   final bool isObscure;
   final Function(String)? onChanged;
   final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
   final String? Function(String?)? validator;
 
   @override
@@ -35,6 +37,7 @@ class AppTextFormField extends StatelessWidget {
       ),
       child: TextFormField(
         textInputAction: textInputAction,
+        keyboardType: textInputType,
         autofocus: true,
         enabled: !isReadOnly,
         obscureText: isObscure,
