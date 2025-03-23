@@ -218,13 +218,15 @@ class HomePage extends StatelessWidget {
                       prefixIcon: Icons.flight,
                       onChanged: cubit.onFlightNumberChanged,
                       validator: TextValidators.required,
+                      textInputAction: TextInputAction.done,
                     ),
                     const SizedBox(height: 16),
                     _getTitleAndValue("Total Parcels", "$totalParcels"),
                     const SizedBox(height: 8),
                     _getTitleAndValue("Total Cartoons", "$totalCartoons"),
                     const SizedBox(height: 8),
-                    _getTitleAndValue("Total Weight", "$totalWeight kg"),
+                    _getTitleAndValue(
+                        "Total Weight", "${totalWeight.toStringAsFixed(2)} kg"),
                     const SizedBox(height: 24),
                     AppButton(
                       text: "Confirm",
