@@ -60,6 +60,12 @@ class DetailsPage extends StatelessWidget {
                           onChanged: (value) => cubit.onWeightChanged(
                             double.parse(value),
                           ),
+                          suffixWidget: Text(
+                            "KG",
+                            style: TextStyle(
+                              color: const Color(0xFF1e78c1),
+                            ),
+                          ),
                           validator: TextValidators.required,
                         ),
                         AppTextFormField(
