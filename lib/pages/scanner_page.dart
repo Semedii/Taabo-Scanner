@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taabo/cubits/scanner/scanner_cubit.dart';
-import 'package:taabo/pages/details_page.dart';
 
 class ScannerPage extends StatelessWidget {
-  ScannerPage({super.key});
+  ScannerPage({required this.onSelect, super.key});
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  final Function(String? trackingNumber) onSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +34,7 @@ class ScannerPage extends StatelessWidget {
         child: BlocListener<ScannerCubit, ScannerState>(
           listener: (context, state) {
             if (state is ScannerInitial && state.trackingNumber != null) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsPage(
-                    trackingNumber: state.trackingNumber!,
-                  ),
-                ),
-              );
+              onSelect(state.trackingNumber);
             }
           },
           child: BlocBuilder<ScannerCubit, ScannerState>(

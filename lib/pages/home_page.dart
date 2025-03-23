@@ -5,6 +5,8 @@ import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/components/app_button.dart';
 import 'package:taabo/components/parcel_card.dart';
 import 'package:taabo/cubits/package/parcel_cubit.dart';
+import 'package:taabo/model/package.dart';
+import 'package:taabo/pages/details_page.dart';
 import 'package:taabo/pages/scanner_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,6 +36,23 @@ class HomePage extends StatelessWidget {
                 Icons.menu,
                 color: Colors.white,
               )),
+          actions: [
+            GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ScannerPage(
+                            onSelect: (trackingNumber) {},
+                          ))),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.barcode_reader,
+                  color: Colors.white,
+                ),
+              ),
+            )
+          ],
         ),
         body: BlocBuilder<ParcelCubit, ParcelState>(
           builder: (context, state) {
@@ -71,7 +90,19 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ScannerPage()),
+              MaterialPageRoute(
+                  builder: (context) => ScannerPage(
+                        onSelect: (trackingNumber) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                trackingNumber: trackingNumber!,
+                              ),
+                            ),
+                          );
+                        },
+                      )),
             );
           },
           backgroundColor: const Color(0xFF1e78c1),
