@@ -9,9 +9,14 @@ import 'package:taabo/utils/store_enums.dart';
 import 'package:taabo/utils/text_validators.dart';
 
 class DetailsPage extends StatelessWidget {
-  DetailsPage({required this.trackingNumber, super.key});
+  DetailsPage({
+    required this.trackingNumber,
+    this.isTrackingFieldReadOnly = true,
+    super.key,
+  });
 
   final String trackingNumber;
+  final bool isTrackingFieldReadOnly;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,7 +51,8 @@ class DetailsPage extends StatelessWidget {
                           label: "Tracking Number",
                           initialvalue: trackingNumber,
                           prefixIcon: Icons.qr_code,
-                          isReadOnly: true,
+                          validator: TextValidators.required,
+                          isReadOnly: isTrackingFieldReadOnly,
                         ),
                         AppTextFormField(
                           label: 'Name',

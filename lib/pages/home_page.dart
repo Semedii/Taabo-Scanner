@@ -47,24 +47,7 @@ class HomePage extends StatelessWidget {
             ),
             body: _buildBody(context, state),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ScannerPage(
-                            onSelect: (trackingNumber) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailsPage(
-                                    trackingNumber: trackingNumber!,
-                                  ),
-                                ),
-                              );
-                            },
-                          )),
-                );
-              },
+              onPressed: () => _onAddButtonPressed(context),
               backgroundColor: const Color(0xFF1e78c1),
               child: Icon(
                 Icons.add,
@@ -268,6 +251,96 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  _onAddButtonPressed(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0)),
+            elevation: 4,
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF9FAFB),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Add Parcel",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1e78c1),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildAddTextButton("Scan", () => _onScanPressed(context)),
+                  const SizedBox(height: 16),
+                  _buildAddTextButton(
+                      "Enter Manually", () => _onEnterManuallyPressed(context)),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Container _buildAddTextButton(String title, Function()? onPressed) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color(0xFF1e78c1),
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            color: const Color(0xFF1e78c1),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _onScanPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ScannerPage(
+                onSelect: (trackingNumber) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsPage(
+                        trackingNumber: trackingNumber!,
+                      ),
+                    ),
+                  );
+                },
+              )),
+    );
+  }
+
+  _onEnterManuallyPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailsPage(
+          trackingNumber: "",
+          isTrackingFieldReadOnly: false,
+        ),
+      ),
     );
   }
 
