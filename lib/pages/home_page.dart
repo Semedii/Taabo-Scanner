@@ -337,7 +337,6 @@ class HomePage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => DetailsPage(
-          trackingNumber: "",
           isTrackingFieldReadOnly: false,
         ),
       ),

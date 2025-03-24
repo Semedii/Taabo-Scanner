@@ -8,6 +8,11 @@ part 'details_state.dart';
 class DetailsCubit extends Cubit<DetailsState> {
   DetailsCubit() : super(DetailsInitial());
 
+  onTrackingNumberChangedChanged(String? trackingNumber) {
+    var lastState = state as DetailsInitial;
+    emit(lastState.copyWith(trackingNumber: trackingNumber));
+  }
+
   onNameChanged(String? name) {
     var lastState = state as DetailsInitial;
     emit(lastState.copyWith(name: name));
@@ -28,12 +33,12 @@ class DetailsCubit extends Cubit<DetailsState> {
     emit(lastState.copyWith(store: store));
   }
 
-  onSubmitButton(String trackingNumber) async {
+  onSubmitButton(String? trackingNumber) async {
     var lastState = state as DetailsInitial;
     emit(DetailsLoading());
     try {
       Parcel newParcel = Parcel(
-        refNumber: trackingNumber,
+        refNumber: trackingNumber ?? lastState.trackingNumber!,
         recipientName: lastState.name,
         store: lastState.store,
         kg: lastState.weight!,

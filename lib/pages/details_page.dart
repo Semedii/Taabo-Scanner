@@ -10,12 +10,12 @@ import 'package:taabo/utils/text_validators.dart';
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({
-    required this.trackingNumber,
+    this.trackingNumber,
     this.isTrackingFieldReadOnly = true,
     super.key,
   });
 
-  final String trackingNumber;
+  final String? trackingNumber;
   final bool isTrackingFieldReadOnly;
 
   final _formKey = GlobalKey<FormState>();
@@ -53,6 +53,7 @@ class DetailsPage extends StatelessWidget {
                           prefixIcon: Icons.qr_code,
                           validator: TextValidators.required,
                           isReadOnly: isTrackingFieldReadOnly,
+                          onChanged: cubit.onTrackingNumberChangedChanged,
                         ),
                         AppTextFormField(
                           label: 'Name',
