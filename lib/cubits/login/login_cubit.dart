@@ -31,12 +31,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
 
     try {
-      final response = await _authService.login(
+      final token = await _authService.login(
         currentState.username!,
         currentState.password!,
       );
-      await _authProvider.login(response["token"]);
-      emit(LoginSuccess(token: response['token']));
+      await _authProvider.login(token);
+      emit(LoginSuccess(token: token));
     } catch (e) {
       emit(
         LoginFailure(

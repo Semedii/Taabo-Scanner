@@ -14,9 +14,11 @@ class AuthService {
           'username': username,
           'password': password,
         }));
-    if (response.statusCode != 200) {
-      final errorData = jsonDecode(response.body);
-      throw Exception(errorData['message'] ?? 'Login failed');
+    final responseData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return responseData['token'] as String;
+    } else {
+      throw Exception(responseData['message'] ?? 'Login failed');
     }
   }
 
