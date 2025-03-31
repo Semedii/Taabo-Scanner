@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:taabo/authentication/auth_provider.dart';
 import 'package:taabo/services/auth_service.dart';
+import 'package:taabo/utils/exception_handler.dart';
 
 part 'login_state.dart';
 
@@ -37,7 +38,11 @@ class LoginCubit extends Cubit<LoginState> {
       await _authProvider.login(response["token"]);
       emit(LoginSuccess(token: response['token']));
     } catch (e) {
-      emit(LoginFailure(errorMessage: e.toString()));
+      emit(
+        LoginFailure(
+          errorMessage: ExceptionHandler.toUserFriendlyMessage(e),
+        ),
+      );
       emit(currentState);
     }
   }
